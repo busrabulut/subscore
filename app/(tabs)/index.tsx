@@ -10,7 +10,7 @@ import {
 
 export default function HomeScreen() {
   const [subscriptions, setSubscriptions] = useState([
-    { name: "Netflix", price: 20, category: "fun", cycle: "monthly", active: true, renewDate: "2026-03-22", emoji:"🎬" },
+    { name: "Netflix", price: 20, category: "entertainment", cycle: "monthly", active: true, renewDate: "2026-03-22", emoji:"🎬" },
     { name: "Spotify", price: 10, category: "music", cycle: "yearly", active: true, renewDate: "2026-06-15", emoji:"🎵" },
   ]);
   const [showForm, setShowForm] = useState(false);
@@ -47,6 +47,14 @@ export default function HomeScreen() {
   .filter((item) => item.active)
   .reduce((total, item) => total + item.price, 0)
   
+  const categoryEmojis = {
+    'Entertainment': '🎬',
+    'Music': '🎵',
+    'Software': '💻',
+    'Sports': '💪🏻',
+    'News': '📰',
+    'Other': '📦',
+  }
   return (
     <ScrollView style={styles.container}
     contentContainerStyle={{alignItems:'center', padding:60}}>
