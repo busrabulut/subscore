@@ -9,8 +9,8 @@ import {
 
 export default function HomeScreen() {
   const [subscriptions, setSubscriptions] = useState([
-    { name: "Netflix", price: 20, category: "fun", cycle: "monthly" },
-    { name: "Spotify", price: 10, category: "music", cycle: "yearly" },
+    { name: "Netflix", price: 20, category: "fun", cycle: "monthly", active: true },
+    { name: "Spotify", price: 10, category: "music", cycle: "yearly", active: true },
   ]);
   const [showForm, setShowForm] = useState(false);
   const [newName, setNewName] = useState('');
@@ -20,7 +20,7 @@ export default function HomeScreen() {
   function addSubscription() {
     setSubscriptions([
       ...subscriptions,
-      { name: newName, price: parseFloat(newPrice), category: "", cycle: newCycle },
+      { name: newName, price: parseFloat(newPrice), category: "", cycle: newCycle, active: true },
     ]);
     setShowForm(false);
     setNewName("");
@@ -31,7 +31,15 @@ export default function HomeScreen() {
 
   }
 
-  const total = subscriptions.reduce((total, item) => total + item.price, 0)
+  function toggleSubscription(name) {
+    setSubscriptions(subscriptions.map((item) =>
+    item.name === name ? {...item, active: !item.active} : item))
+  }
+
+  const total = subscriptions
+  .filter((item) => item.active)
+  .reduce((total, item) => total + item.price, 0)
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Subscore</Text>
@@ -45,6 +53,9 @@ export default function HomeScreen() {
           <Text style={styles.cardDetail}>{item.cycle}</Text>
           <TouchableOpacity onPress={ () => deleteSubscription(item.name)}>
             <Text style={{color:'red'}}>Delete</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={ () => toggleSubscription(item.name)}>
+            <Text style={{color:'yellow'}}>{item.active ? 'Pause' : 'Activate'}</Text>
           </TouchableOpacity>
         </View>
       ))}
