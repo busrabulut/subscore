@@ -9,8 +9,8 @@ import {
 
 export default function HomeScreen() {
   const [subscriptions, setSubscriptions] = useState([
-    { name: "Netflix", price: 20, category: "fun", cycle: "monthly", active: true },
-    { name: "Spotify", price: 10, category: "music", cycle: "yearly", active: true },
+    { name: "Netflix", price: 20, category: "fun", cycle: "monthly", active: true, renewDate: "2026-03-22" },
+    { name: "Spotify", price: 10, category: "music", cycle: "yearly", active: true, renewDate: "2026-06-15" },
   ]);
   const [showForm, setShowForm] = useState(false);
   const [newName, setNewName] = useState('');
@@ -36,6 +36,11 @@ export default function HomeScreen() {
     item.name === name ? {...item, active: !item.active} : item))
   }
 
+  function daysUntil(dateStr) {
+    const diff = new Date(dateStr) - new Date()
+    return Math.ceil(diff / (1000* 60 * 60 * 24))
+  }
+
   const total = subscriptions
   .filter((item) => item.active)
   .reduce((total, item) => total + item.price, 0)
@@ -51,6 +56,9 @@ export default function HomeScreen() {
           <Text style={styles.cardDetail}>${item.price}</Text>
           <Text style={styles.cardDetail}>{item.category}</Text>
           <Text style={styles.cardDetail}>{item.cycle}</Text>
+          <Text style={{color: daysUntil(item.renewDate) <= 7 ? 'red' : '#888', fontSize: 10}}>
+            Renews: {item.renewDate} ({daysUntil(item.renewDate)} days)
+          </Text>
           <TouchableOpacity onPress={ () => deleteSubscription(item.name)}>
             <Text style={{color:'red'}}>Delete</Text>
           </TouchableOpacity>
