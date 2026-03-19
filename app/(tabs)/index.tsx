@@ -21,7 +21,7 @@ export default function HomeScreen() {
   function addSubscription() {
     setSubscriptions([
       ...subscriptions,
-      { name: newName, price: parseFloat(newPrice), category: "", cycle: newCycle, active: true },
+      { name: newName, price: parseFloat(newPrice), category: "", cycle: newCycle, active: true, renewDate: newRenewDate },
     ]);
     setShowForm(false);
     setNewName("");
@@ -46,6 +46,8 @@ export default function HomeScreen() {
   .filter((item) => item.active)
   .reduce((total, item) => total + item.price, 0)
   
+  const [newRenewDate, setNewRenewDate] = useState('')
+
   return (
     <ScrollView style={styles.container}
     contentContainerStyle={{alignItems:'center', padding:60}}>
@@ -57,9 +59,10 @@ export default function HomeScreen() {
       <View style={styles.totalCard}>
         <Text style={styles.totalLabel}>Monthly Total</Text>
         <Text style={styles.totalAmount}>${total}</Text>
+        <Text style={styles.totalLabel}>{subscriptions.filter(item => item.active).length} active subscriptions</Text>
       </View>
       {subscriptions.map((item) => (
-        <View key={item.name} style={styles.card}>
+        <View key={item.name} style={[styles.card, {opacity: item.active ? 1 : 0.4}]}>
           <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
             <Text style={styles.cardTitle}>{item.name}</Text>
             <Text style={styles.cardDetail}>${item.price}</Text>
@@ -92,6 +95,12 @@ export default function HomeScreen() {
           placeholderTextColor='#888'
           style={{ color: 'white'}}
           onChangeText={(text) => setNewPrice(text)}
+          />
+          <TextInput
+            placeholder='Renew date (YYYY-MM-DD)'
+            placeholderTextColor='#888'
+            style={{color:'white'}}
+            onChangeText={(text) => setNewRenewDate(text)}
           />
           <View style={{flexDirection:'row', gap:8}}>
             <TouchableOpacity onPress={() => setNewCycle('monthly')}>
