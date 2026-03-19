@@ -10,13 +10,14 @@ import {
 
 export default function HomeScreen() {
   const [subscriptions, setSubscriptions] = useState([
-    { name: "Netflix", price: 20, category: "fun", cycle: "monthly", active: true, renewDate: "2026-03-22" },
-    { name: "Spotify", price: 10, category: "music", cycle: "yearly", active: true, renewDate: "2026-06-15" },
+    { name: "Netflix", price: 20, category: "fun", cycle: "monthly", active: true, renewDate: "2026-03-22", emoji:"🎬" },
+    { name: "Spotify", price: 10, category: "music", cycle: "yearly", active: true, renewDate: "2026-06-15", emoji:"🎵" },
   ]);
   const [showForm, setShowForm] = useState(false);
   const [newName, setNewName] = useState('');
   const [newPrice, setNewPrice] = useState('');
   const [newCycle, setNewCycle] = useState('');
+  const [newRenewDate, setNewRenewDate] = useState('');
 
   function addSubscription() {
     setSubscriptions([
@@ -46,8 +47,6 @@ export default function HomeScreen() {
   .filter((item) => item.active)
   .reduce((total, item) => total + item.price, 0)
   
-  const [newRenewDate, setNewRenewDate] = useState('')
-
   return (
     <ScrollView style={styles.container}
     contentContainerStyle={{alignItems:'center', padding:60}}>
@@ -64,7 +63,7 @@ export default function HomeScreen() {
       {subscriptions.map((item) => (
         <View key={item.name} style={[styles.card, {opacity: item.active ? 1 : 0.4}]}>
           <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-            <Text style={styles.cardTitle}>{item.name}</Text>
+            <Text style={styles.cardTitle}>{item.emoji} {item.name}</Text>
             <Text style={styles.cardDetail}>${item.price}</Text>
           </View>
 
