@@ -55,10 +55,14 @@ export default function HomeScreen() {
           />
           <View style={{flexDirection:'row', gap:8}}>
             <TouchableOpacity onPress={() => setNewCycle('monthly')}>
-            <Text style={{color:'white'}}>Monthly</Text>
+            <Text style={{backgroundColor: newCycle === 'monthly' ? '#7b2ff7' : '#333',
+              padding: 8, borderRadius: 8
+            }}>Monthly</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setNewCycle('yearly')}>
-            <Text style={{color:'white'}}>Yearly</Text>
+            <Text style={{backgroundColor: newCycle === 'yearly' ? '#7b2ff7' : '#333',
+              padding: 8, borderRadius: 8
+            }}>Yearly</Text>
             </TouchableOpacity>
             </View>
           <TouchableOpacity onPress={() => addSubscription()}>
