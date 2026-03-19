@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ScrollView
 } from "react-native";
 
 export default function HomeScreen() {
@@ -46,25 +47,36 @@ export default function HomeScreen() {
   .reduce((total, item) => total + item.price, 0)
   
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Subscore</Text>
-      <Text style={styles.header}>Track your subscriptions</Text>
-      <Text style={{color:'white', fontSize:24, fontWeight:'bold'}}>${total}</Text>
+    <ScrollView style={styles.container}
+    contentContainerStyle={{alignItems:'center', padding:60}}>
+      <View style={styles.headerContainer}> 
+        <Text style={styles.title}>Subscore</Text>
+        <Text style={styles.header}>Track your subscriptions</Text>
+      </View>
+
+      <View style={styles.totalCard}>
+        <Text style={styles.totalLabel}>Monthly Total</Text>
+        <Text style={styles.totalAmount}>${total}</Text>
+      </View>
       {subscriptions.map((item) => (
         <View key={item.name} style={styles.card}>
-          <Text style={styles.cardTitle}>{item.name}</Text>
-          <Text style={styles.cardDetail}>${item.price}</Text>
-          <Text style={styles.cardDetail}>{item.category}</Text>
-          <Text style={styles.cardDetail}>{item.cycle}</Text>
-          <Text style={{color: daysUntil(item.renewDate) <= 7 ? 'red' : '#888', fontSize: 10}}>
+          <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+            <Text style={styles.cardTitle}>{item.name}</Text>
+            <Text style={styles.cardDetail}>${item.price}</Text>
+          </View>
+
+          <Text style={styles.cardDetail}>{item.category} {item.cycle}</Text>
+          <Text style={{color: daysUntil(item.renewDate) <= 7 ? 'red' : '#888', fontSize: 10, marginTop: 4}}>
             Renews: {item.renewDate} ({daysUntil(item.renewDate)} days)
           </Text>
-          <TouchableOpacity onPress={ () => deleteSubscription(item.name)}>
-            <Text style={{color:'red'}}>Delete</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={ () => toggleSubscription(item.name)}>
-            <Text style={{color:'yellow'}}>{item.active ? 'Pause' : 'Activate'}</Text>
-          </TouchableOpacity>
+          <View style={{flexDirection:'row', gap:8, marginTop:8}}>
+              <TouchableOpacity onPress={ () => toggleSubscription(item.name)}>
+               <Text style={{color:'yellow'}}>{item.active ? 'Pause' : 'Activate'}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={ () => deleteSubscription(item.name)}>
+               <Text style={{color:'red'}}>Delete</Text>
+              </TouchableOpacity>
+          </View>
         </View>
       ))}
       {showForm && (
@@ -101,15 +113,13 @@ export default function HomeScreen() {
       <TouchableOpacity onPress={() => setShowForm(true)}>
         <Text style={{ color: 'white' }}>+Add</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#0F0F1A",
   },
 
@@ -141,5 +151,38 @@ const styles = StyleSheet.create({
   cardDetail: {
     color: "#888888",
     fontSize: 10,
+  },
+
+  headerContainer: {
+    width:'100%',
+    paddingHorizontal: 20,
+    marginBottom: 16,
+  },
+
+  totalCard: {
+    backgroundColor: '#1e1b46',
+    borderRadius: 20,
+    padding: 24,
+    width: '90%',
+    marginBottom: 20,
+  },
+
+  totalLabel: {
+    color: '#a5b4fc',
+    fontSize: 12,
+    letterSpacing: 1,
+    marginBottom: 8,
+  },
+
+  totalAmount: {
+    color: 'white',
+    fontSize: 40,
+    fontWeight: '900',
+  },
+
+  cardAmount: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
