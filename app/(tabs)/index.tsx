@@ -26,17 +26,26 @@ export default function HomeScreen() {
     setNewName("");
   }
 
+  function deleteSubscription(name) {
+    setSubscriptions(subscriptions.filter((item) => item.name != name))
+
+  }
+
+  const total = subscriptions.reduce((total, item) => total + item.price, 0)
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Subscore</Text>
       <Text style={styles.header}>Track your subscriptions</Text>
-
+      <Text style={{color:'white', fontSize:24, fontWeight:'bold'}}>${total}</Text>
       {subscriptions.map((item) => (
         <View key={item.name} style={styles.card}>
           <Text style={styles.cardTitle}>{item.name}</Text>
           <Text style={styles.cardDetail}>${item.price}</Text>
           <Text style={styles.cardDetail}>{item.category}</Text>
           <Text style={styles.cardDetail}>{item.cycle}</Text>
+          <TouchableOpacity onPress={ () => deleteSubscription(item.name)}>
+            <Text style={{color:'red'}}>Delete</Text>
+          </TouchableOpacity>
         </View>
       ))}
       {showForm && (
