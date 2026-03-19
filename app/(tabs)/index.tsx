@@ -80,7 +80,7 @@ export default function HomeScreen() {
         </View>
       ))}
       {showForm && (
-        <View style={styles.card}>
+        <View style={styles.formCard}>
           <TextInput
             placeholder='Subscription name'
             placeholderTextColor= '#888'
@@ -105,13 +105,15 @@ export default function HomeScreen() {
             }}>Yearly</Text>
             </TouchableOpacity>
             </View>
-          <TouchableOpacity onPress={() => addSubscription()}>
-            <Text style={{color:'white'}}>Save</Text>
+          <TouchableOpacity onPress={() => addSubscription()}
+            style={{backgroundColor:'#7b2ff7', borderRadius:12, padding:12, alignItems:'center'}}>
+            <Text style={{color:'white', fontWeight:'bold'}}>Save</Text>
             </TouchableOpacity>
         </View>
       )}
-      <TouchableOpacity onPress={() => setShowForm(true)}>
-        <Text style={{ color: 'white' }}>+Add</Text>
+      <TouchableOpacity onPress={() => setShowForm(true)}
+        style={styles.addButton}>
+        <Text style={styles.addButtonText}>Add Subscription</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -185,4 +187,27 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+
+  addButton: {
+    backgroundColor: '#7b2ff7',
+    borderRadius: 16,
+    padding: 16,
+    width: '90%',
+    marginTop: 8,
+  },
+  
+  addButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  
+  formCard: {
+    backgroundColor: '#1a1a2e',
+    borderRadius: 20,
+    padding: 20,
+    width: '90%',
+    marginBottom: 16,
+    gap: 12,
+  }
 });
