@@ -87,8 +87,10 @@ export default function HomeScreen() {
   }, [])
 
   return (
+
     <ScrollView style={styles.container}
     contentContainerStyle={{alignItems:'center', padding:60}}>
+
       <View style={styles.headerContainer}> 
         <Text style={styles.title}>Subscore</Text>
         <Text style={styles.header}>Track your subscriptions</Text>
@@ -99,27 +101,61 @@ export default function HomeScreen() {
         <Text style={styles.totalAmount}>${total}</Text>
         <Text style={styles.totalLabel}>{subscriptions.filter(item => item.active).length} active subscriptions</Text>
       </View>
+
       {subscriptions.map((item) => (
         <View key={item.name} style={[styles.card, {opacity: item.active ? 1 : 0.4}]}>
           <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
             <Text style={styles.cardTitle}>{item.emoji} {item.name}</Text>
-            <Text style={styles.cardDetail}>${item.price}</Text>
+            <Text style={styles.cardAmount}>${item.price}</Text>
           </View>
 
-          <Text style={styles.cardDetail}>{item.category} {item.cycle}</Text>
+          <View style={{flexDirection:'row', gap:6, marginTop:6}}>
+          <Text style={{
+            backgroundColor: 'rgba(123,47,247,0.2)',
+            color: '#c4b5fd',
+            fontSize: 10,
+            paddingHorizontal: 8,
+            paddingVertical: 3,
+            borderRadius: 20,
+          }}>{item.category}</Text>
+          <Text style= {{
+            backgroundColor: 'rgba(255,255,255,0.08)',
+            color: '#888',
+            fontSize: 10,
+            paddingHorizontal: 8,
+            paddingVertical: 3,
+            borderRadius: 20,
+          }}>
+          {item.cycle}</Text>
+          </View>
           <Text style={{color: daysUntil(item.renewDate) <= 7 ? 'red' : '#888', fontSize: 10, marginTop: 4}}>
             Renews: {item.renewDate} ({daysUntil(item.renewDate)} days)
           </Text>
-          <View style={{flexDirection:'row', gap:8, marginTop:8}}>
+
+          <View style={{flexDirection:'row', gap:8, marginTop:12}}>
               <TouchableOpacity onPress={ () => toggleSubscription(item.name)}>
-               <Text style={{color:'yellow'}}>{item.active ? 'Pause' : 'Activate'}</Text>
+               <Text style={{
+                borderWidth: 1,
+                borderColor: item.active ? '#f59e0b' : '#10b981',
+                borderRadius: 8,
+                paddingHorizontal: 12,
+                paddingVertical: 6,
+                color: item.active ? '#f59e0b' : '#10b981', fontSize: 12}}>{item.active ? 'Pause' : 'Activate'}</Text>
               </TouchableOpacity>
+
               <TouchableOpacity onPress={ () => deleteSubscription(item.name)}>
-               <Text style={{color:'red'}}>Delete</Text>
+               <Text style={{
+                borderWidth: 1,
+                borderColor: '#ef4444',
+                borderRadius: 8,
+                paddingHorizontal: 12,
+                paddingVertical: 6,
+                color:'#ef4444', fontSize: 12}}>Delete</Text>
               </TouchableOpacity>
           </View>
         </View>
       ))}
+
       {showForm && (
         <View style={styles.formCard}>
           <TextInput
@@ -202,8 +238,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#1a1a2e',
     borderRadius: 16,
     padding: 16,
-    width: '80%',
+    width: '90%',
     marginBottom: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
   },
 
   cardTitle: {
