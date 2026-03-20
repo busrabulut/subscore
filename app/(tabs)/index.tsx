@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage' ;
+import { LinearGradient } from 'expo-linear-gradient';
+import MaskedView from '@react-native-masked-view/masked-view';
 import {
   StyleSheet,
   Text,
@@ -91,16 +93,28 @@ export default function HomeScreen() {
     <ScrollView style={styles.container}
     contentContainerStyle={{alignItems:'center', padding:60}}>
 
+      <MaskedView
+        maskElement={<Text style={styles.title}>Subscore</Text>}>
+          <LinearGradient
+          colors={['#00d2ff', '#4f46e5']}
+          start={{x: 0, y: 0}}
+          end={{x:1, y:0}}>
+            <Text style={[styles.title, {opacity: 0}]}>Subscore</Text>
+          </LinearGradient>
+
+      </MaskedView>
+
       <View style={styles.headerContainer}> 
-        <Text style={styles.title}>Subscore</Text>
-        <Text style={styles.header}>Track your subscriptions</Text>
+        <Text style={styles.header}>SUBSCRIPTIONS</Text>
       </View>
 
-      <View style={styles.totalCard}>
+      <LinearGradient 
+      colors={['#1e1b4b', '#312e81']}
+      style={styles.totalCard}>
         <Text style={styles.totalLabel}>Monthly Total</Text>
         <Text style={styles.totalAmount}>${total}</Text>
         <Text style={styles.totalLabel}>{subscriptions.filter(item => item.active).length} active subscriptions</Text>
-      </View>
+      </LinearGradient>
 
       {subscriptions.map((item) => (
         <View key={item.name} style={[styles.card, {opacity: item.active ? 1 : 0.4}]}>
@@ -223,9 +237,10 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    color: 'white',
-    fontSize: 32,
-    fontWeight: 'bold',
+    color: '#00d2ff',
+    fontSize: 36,
+    fontWeight: '900',
+    letterSpacing: -1
   },
 
   header: {
