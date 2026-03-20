@@ -18,11 +18,20 @@ export default function HomeScreen() {
   const [newPrice, setNewPrice] = useState('');
   const [newCycle, setNewCycle] = useState('');
   const [newRenewDate, setNewRenewDate] = useState('');
+  const [newCategory, setNewCategory] = useState('Other')
 
   function addSubscription() {
     setSubscriptions([
       ...subscriptions,
-      { name: newName, price: parseFloat(newPrice), category: "", cycle: newCycle, active: true, renewDate: newRenewDate },
+      { 
+        name: newName, 
+        price: parseFloat(newPrice), 
+        category: newCategory, 
+        cycle: newCycle, 
+        active: true, 
+        renewDate: newRenewDate, 
+        emoji: categoryEmojis[newCategory] 
+      },
     ]);
     setShowForm(false);
     setNewName("");
@@ -55,6 +64,7 @@ export default function HomeScreen() {
     'News': '📰',
     'Other': '📦',
   }
+
   return (
     <ScrollView style={styles.container}
     contentContainerStyle={{alignItems:'center', padding:60}}>
@@ -109,6 +119,20 @@ export default function HomeScreen() {
             style={{color:'white'}}
             onChangeText={(text) => setNewRenewDate(text)}
           />
+          <View style={{flexDirection: 'row', flexWrap:'wrap', gap:8}}>
+            {Object.keys(categoryEmojis).map((cat) => (
+              <TouchableOpacity
+                key={cat}
+                onPress={() => setNewCategory(cat)}>
+                <Text style={{
+                  backgroundColor: newCategory === cat ? '#7b2ff7' : '#333',
+                  padding: 8,
+                  borderRadius: 8,
+                  color: 'white'
+                  }}>{categoryEmojis[cat]} {cat}</Text>  
+                </TouchableOpacity>
+            ))}
+          </View>
           <View style={{flexDirection:'row', gap:8}}>
             <TouchableOpacity onPress={() => setNewCycle('monthly')}>
             <Text style={{backgroundColor: newCycle === 'monthly' ? '#7b2ff7' : '#333',
