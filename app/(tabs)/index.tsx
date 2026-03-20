@@ -93,7 +93,11 @@ export default function HomeScreen() {
     <ScrollView style={styles.container}
     contentContainerStyle={{alignItems:'center', padding:60}}>
 
-      <MaskedView
+      <View style={styles.headerContainer}>
+        <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+        <View>
+              <Text style={styles.header}>SUBSCRIPTIONS</Text>
+               <MaskedView
         maskElement={<Text style={styles.title}>Subscore</Text>}>
           <LinearGradient
           colors={['#00d2ff', '#4f46e5']}
@@ -101,11 +105,39 @@ export default function HomeScreen() {
           end={{x:1, y:0}}>
             <Text style={[styles.title, {opacity: 0}]}>Subscore</Text>
           </LinearGradient>
-
       </MaskedView>
+        </View>
 
-      <View style={styles.headerContainer}> 
-        <Text style={styles.header}>SUBSCRIPTIONS</Text>
+      <TouchableOpacity
+      onPress={() => setShowForm(true)}>
+        <LinearGradient
+        colors={['#00d2ff', '#7b1ff7']}
+        start={{x:0, y:0}}
+        end={{x:1, y:1}}
+        style={{
+          width: 52,
+          height: 52,
+          borderRadius: 26,
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 3,
+        }}>
+
+          <View style={{
+            width: 46,
+            height: 46,
+            borderRadius: 23,
+            backgroundColor: '#0F0F1A',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+
+          
+          <Text style={{color:'white', fontSize:24, fontWeight:'500'}}>+</Text>
+          </View>
+          </LinearGradient>
+      </TouchableOpacity>
+     </View>
       </View>
 
       <LinearGradient 
@@ -222,10 +254,6 @@ export default function HomeScreen() {
             </TouchableOpacity>
         </View>
       )}
-      <TouchableOpacity onPress={() => setShowForm(true)}
-        style={styles.addButton}>
-        <Text style={styles.addButtonText}>Add Subscription</Text>
-      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -237,45 +265,53 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    color: '#00d2ff',
     fontSize: 36,
     fontWeight: '900',
-    letterSpacing: -1
   },
 
   header: {
     color: '#888888',
     fontSize: 12,
-    marginTop: 8,
+    marginTop: 4,
+    letterSpacing: 2,
+    textTransform: 'uppercase',
   },
 
   card: {
-    backgroundColor: '#1a1a2e',
+    backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 16,
     padding: 16,
     width: '90%',
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(255,255,255,0.1)',
   },
 
   cardTitle: {
     color: 'white',
     fontSize: 16,
+    marginTop: 4,
   },
 
   cardDetail: {
     color: '#888888',
-    fontSize: 10,
+    fontSize: 11,
+    marginTop: 4,
   },
 
-  headerContainer: {
+    cardAmount: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '800',
+  },
+
+    headerContainer: {
     width:'100%',
     paddingHorizontal: 20,
-    marginBottom: 16,
+    marginBottom: 20,
   },
 
-  totalCard: {
+    totalCard: {
     backgroundColor: '#1e1b46',
     borderRadius: 20,
     padding: 24,
@@ -285,29 +321,25 @@ const styles = StyleSheet.create({
 
   totalLabel: {
     color: '#a5b4fc',
-    fontSize: 12,
-    letterSpacing: 1,
+    fontSize: 11,
+    letterSpacing: 2,
     marginBottom: 8,
   },
 
   totalAmount: {
     color: 'white',
-    fontSize: 40,
+    fontSize: 44,
     fontWeight: '900',
-  },
-
-  cardAmount: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+    marginBottom: 8,
   },
 
   addButton: {
     backgroundColor: '#7b2ff7',
     borderRadius: 16,
-    padding: 16,
+    padding: 18,
     width: '90%',
     marginTop: 8,
+    alignItems: 'center',
   },
   
   addButtonText: {
@@ -323,5 +355,7 @@ const styles = StyleSheet.create({
     width: '90%',
     marginBottom: 16,
     gap: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0,1)',
   }
 });
