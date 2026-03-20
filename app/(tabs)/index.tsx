@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage' ;
 import {
   StyleSheet,
   Text,
@@ -6,12 +7,12 @@ import {
   TouchableOpacity,
   View,
   ScrollView
-} from "react-native";
+} from 'react-native';
 
 export default function HomeScreen() {
   const [subscriptions, setSubscriptions] = useState([
-    { name: "Netflix", price: 20, category: "entertainment", cycle: "monthly", active: true, renewDate: "2026-03-22", emoji:"🎬" },
-    { name: "Spotify", price: 10, category: "music", cycle: "yearly", active: true, renewDate: "2026-06-15", emoji:"🎵" },
+    { name: 'Netflix', price: 20, category: 'entertainment', cycle: 'monthly', active: true, renewDate: '2026-03-22', emoji:'🎬' },
+    { name: 'Spotify', price: 10, category: 'music', cycle: 'yearly', active: true, renewDate: '2026-06-15', emoji:'🎵' },
   ]);
   const [showForm, setShowForm] = useState(false);
   const [newName, setNewName] = useState('');
@@ -25,30 +26,42 @@ export default function HomeScreen() {
       alert('Please fill in all fields!')
       return
     }
-    setSubscriptions([
-      ...subscriptions,
-      { 
-        name: newName, 
+    const newSub = {
+      name: newName, 
         price: parseFloat(newPrice), 
         category: newCategory, 
         cycle: newCycle, 
         active: true, 
         renewDate: newRenewDate, 
-        emoji: categoryEmojis[newCategory] 
-      },
-    ]);
+        emoji: categoryEmojis[newCategory]
+    }
+    const updated = [...subscriptions, newSub]
+    setSubscriptions(updated)
+    saveData(updated)
     setShowForm(false);
-    setNewName("");
+    setNewName('');
   }
 
   function deleteSubscription(name) {
-    setSubscriptions(subscriptions.filter((item) => item.name != name))
+    const updated = subscriptions.filter((item) => item.name != name)
+    setSubscriptions(updated)
+    saveData(updated)
+  }
 
+  async function saveData(data) {
+    await AsyncStorage.setItem('subscriptions', JSON.stringify(data))
+  }
+
+  async function loadData() {
+    const data = await AsyncStorage.getItem('subscriptions')
+    if (data) setSubscriptions(JSON.parse(data))
   }
 
   function toggleSubscription(name) {
-    setSubscriptions(subscriptions.map((item) =>
-    item.name === name ? {...item, active: !item.active} : item))
+    const updated = subscriptions.map((item) => 
+    item.name === name ? {...item, active: !item.active} : item)
+    setSubscriptions(updated)
+    saveData(updated)
   }
 
   function daysUntil(dateStr) {
@@ -68,6 +81,10 @@ export default function HomeScreen() {
     'News': '📰',
     'Other': '📦',
   }
+
+  useEffect(() => {
+    loadData()
+  }, [])
 
   return (
     <ScrollView style={styles.container}
@@ -166,36 +183,36 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0F0F1A",
+    backgroundColor: '#0F0F1A',
   },
 
   title: {
-    color: "white",
+    color: 'white',
     fontSize: 32,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 
   header: {
-    color: "#888888",
+    color: '#888888',
     fontSize: 12,
     marginTop: 8,
   },
 
   card: {
-    backgroundColor: "#1a1a2e",
+    backgroundColor: '#1a1a2e',
     borderRadius: 16,
     padding: 16,
-    width: "80%",
+    width: '80%',
     marginBottom: 12,
   },
 
   cardTitle: {
-    color: "white",
+    color: 'white',
     fontSize: 16,
   },
 
   cardDetail: {
-    color: "#888888",
+    color: '#888888',
     fontSize: 10,
   },
 
