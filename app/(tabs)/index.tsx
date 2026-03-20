@@ -21,6 +21,10 @@ export default function HomeScreen() {
   const [newCategory, setNewCategory] = useState('Other')
 
   function addSubscription() {
+    if (!newName || !newPrice || !newCycle) {
+      alert('Please fill in all fields!')
+      return
+    }
     setSubscriptions([
       ...subscriptions,
       { 
