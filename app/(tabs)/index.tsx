@@ -8,7 +8,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  ScrollView
+  ScrollView,
+  SafeAreaView
 } from 'react-native';
 
 export default function HomeScreen() {
@@ -90,8 +91,11 @@ export default function HomeScreen() {
 
   return (
 
+    <SafeAreaView style={{flex:1, backgroundColor: '#0F0F1A'}}>
+
+
     <ScrollView style={styles.container}
-    contentContainerStyle={{alignItems:'center', padding:60}}>
+    contentContainerStyle={{alignItems:'center', padding:10}}>
 
       <View style={styles.headerContainer}>
         <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
@@ -255,6 +259,7 @@ export default function HomeScreen() {
         </View>
       )}
     </ScrollView>
+        </SafeAreaView>
   );
 }
 
