@@ -15,26 +15,7 @@ import {
 } from "react-native";
 
 export default function HomeScreen() {
-  const [subscriptions, setSubscriptions] = useState([
-    {
-      name: "Netflix",
-      price: 20,
-      category: "entertainment",
-      cycle: "monthly",
-      active: true,
-      renewDate: "2026-03-22",
-      emoji: "🎬",
-    },
-    {
-      name: "Spotify",
-      price: 10,
-      category: "music",
-      cycle: "yearly",
-      active: true,
-      renewDate: "2026-06-15",
-      emoji: "🎵",
-    },
-  ]);
+  const [subscriptions, setSubscriptions] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const bottomSheetRef = useRef(null);
   const [newName, setNewName] = useState("");
@@ -42,6 +23,7 @@ export default function HomeScreen() {
   const [newCycle, setNewCycle] = useState("");
   const [newRenewDate, setNewRenewDate] = useState("");
   const [newCategory, setNewCategory] = useState("Other");
+  const [newCurrency, setNewCurrency] = useState("USD");
 
   function addSubscription() {
     if (!newName || !newPrice || !newCycle) {
@@ -56,6 +38,7 @@ export default function HomeScreen() {
       active: true,
       renewDate: newRenewDate,
       emoji: categoryEmojis[newCategory],
+      currency: newCurrency,
     };
     const updated = [...subscriptions, newSub];
     setSubscriptions(updated);
@@ -185,7 +168,7 @@ export default function HomeScreen() {
             style={styles.totalCard}
           >
             <Text style={styles.totalLabel}>Monthly Total</Text>
-            <Text style={styles.totalAmount}>${total}</Text>
+            <Text style={styles.totalAmount}>{total}</Text>
             <Text style={styles.totalLabel}>
               {subscriptions.filter((item) => item.active).length} active
               subscriptions
@@ -207,7 +190,7 @@ export default function HomeScreen() {
                 <Text style={styles.cardTitle}>
                   {item.emoji} {item.name}
                 </Text>
-                <Text style={styles.cardAmount}>${item.price}</Text>
+                <Text style={styles.cardAmount}>{item.currency === "TRY" ? "₺" : item.currency === "EUR" ? "€" : "$"}{item.price}</Text>
               </View>
 
               <View style={{ flexDirection: "row", gap: 6, marginTop: 6 }}>
@@ -301,23 +284,80 @@ export default function HomeScreen() {
               New Subscription
             </Text>
             <TextInput
+              style={{
+                color: "white",
+                borderWidth: 1,
+                borderColor: "rgba(255,255,255,0.5)",
+                borderRadius: 10,
+                padding: 12,
+                marginBottom: 4,
+              }}
               placeholder="Subscription name"
               placeholderTextColor="#888"
-              style={{ color: "white" }}
               onChangeText={(text) => setNewName(text)}
             />
             <TextInput
+              style={{
+                color: "white",
+                borderWidth: 1,
+                borderColor: "rgba(255,255,255,0.5)",
+                borderRadius: 10,
+                padding: 12,
+                marginBottom: 4,
+              }}
               placeholder="Subscription price"
               placeholderTextColor="#888"
-              style={{ color: "white" }}
               onChangeText={(text) => setNewPrice(text)}
             />
             <TextInput
+              style={{
+                color: "white",
+                borderWidth: 1,
+                borderColor: "rgba(255,255,255,0.5)",
+                borderRadius: 10,
+                padding: 12,
+                marginBottom: 4,
+              }}
               placeholder="Renew date (YYYY-MM-DD)"
               placeholderTextColor="#888"
-              style={{ color: "white" }}
               onChangeText={(text) => setNewRenewDate(text)}
             />
+            <View style={{ flexDirection: "row", gap: 8 }}>
+              {["TRY", "USD", "EUR"].map((currency) => (
+                <TouchableOpacity
+                  key={currency}
+                  onPress={() => setNewCurrency(currency)}
+                  style={{
+                    flex: 1,
+                    padding: 10,
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor:
+                      newCurrency === currency
+                        ? "#7b22f7"
+                        : "rgba(255,255,255,0.15)",
+                    backgroundColor:
+                      newCurrency === currency
+                        ? "rgba(123,47,247,0.2)"
+                        : "transparent",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: newCurrency === currency ? "#c4b5fd" : "#888",
+                      fontWeight: "600",
+                    }}
+                  >
+                    {currency === "TRY"
+                      ? "₺ TRY"
+                      : currency === "USD"
+                        ? "$ USD"
+                        : "€ EUR"}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
             <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
               {Object.keys(categoryEmojis).map((cat) => (
                 <TouchableOpacity key={cat} onPress={() => setNewCategory(cat)}>
@@ -344,7 +384,7 @@ export default function HomeScreen() {
                     borderRadius: 8,
                   }}
                 >
-                  MonthlyF
+                  Monthly
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setNewCycle("yearly")}>
