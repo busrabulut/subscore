@@ -24,6 +24,7 @@ export default function HomeScreen() {
   const [newRenewDate, setNewRenewDate] = useState("");
   const [newCategory, setNewCategory] = useState("Other");
   const [newCurrency, setNewCurrency] = useState("USD");
+  const [selectedCard, setSelectedCard] = useState(null);
 
   function addSubscription() {
     if (!newName || !newPrice || !newCycle) {
@@ -175,9 +176,31 @@ export default function HomeScreen() {
             </Text>
           </LinearGradient>
 
+          {subscriptions.length === 0 && (
+            <View style={{ alignItems: "center", marginTop: 40 }}>
+              <Text style={{ fontSize: 40 }}>📭</Text>
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: 16,
+                  fontWeight: "700",
+                  marginTop: 12,
+                }}
+              >
+                No subscriptions yet
+              </Text>
+              <Text style={{ color: "#888", fontSize: 13, marginTop: 6 }}>
+                Tap + to add your first one
+              </Text>
+            </View>
+          )}
+
           {subscriptions.map((item) => (
-            <View
+            <TouchableOpacity
               key={item.name}
+              onPress={() =>
+                setSelectedCard(selectedCard === item.name ? null : item.name)
+              }
               style={[styles.card, { opacity: item.active ? 1 : 0.4 }]}
             >
               <View
@@ -190,7 +213,14 @@ export default function HomeScreen() {
                 <Text style={styles.cardTitle}>
                   {item.emoji} {item.name}
                 </Text>
-                <Text style={styles.cardAmount}>{item.currency === "TRY" ? "₺" : item.currency === "EUR" ? "€" : "$"}{item.price}</Text>
+                <Text style={styles.cardAmount}>
+                  {item.currency === "TRY"
+                    ? "₺"
+                    : item.currency === "EUR"
+                      ? "€"
+                      : "$"}
+                  {item.price}
+                </Text>
               </View>
 
               <View style={{ flexDirection: "row", gap: 6, marginTop: 6 }}>
@@ -229,40 +259,46 @@ export default function HomeScreen() {
                 Renews: {item.renewDate} ({daysUntil(item.renewDate)} days)
               </Text>
 
-              <View style={{ flexDirection: "row", gap: 8, marginTop: 12 }}>
-                <TouchableOpacity onPress={() => toggleSubscription(item.name)}>
-                  <Text
-                    style={{
-                      borderWidth: 1,
-                      borderColor: item.active ? "#f59e0b" : "#10b981",
-                      borderRadius: 8,
-                      paddingHorizontal: 12,
-                      paddingVertical: 6,
-                      color: item.active ? "#f59e0b" : "#10b981",
-                      fontSize: 12,
-                    }}
+              {selectedCard === item.name && (
+                <View style={{ flexDirection: "row", gap: 8, marginTop: 12 }}>
+                  <TouchableOpacity
+                    onPress={() => toggleSubscription(item.name)}
                   >
-                    {item.active ? "Pause" : "Activate"}
-                  </Text>
-                </TouchableOpacity>
+                    <Text
+                      style={{
+                        borderWidth: 1,
+                        borderColor: item.active ? "#f59e0b" : "#10b981",
+                        borderRadius: 8,
+                        paddingHorizontal: 12,
+                        paddingVertical: 6,
+                        color: item.active ? "#f59e0b" : "#10b981",
+                        fontSize: 12,
+                      }}
+                    >
+                      {item.active ? "Pause" : "Activate"}
+                    </Text>
+                  </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => deleteSubscription(item.name)}>
-                  <Text
-                    style={{
-                      borderWidth: 1,
-                      borderColor: "#ef4444",
-                      borderRadius: 8,
-                      paddingHorizontal: 12,
-                      paddingVertical: 6,
-                      color: "#ef4444",
-                      fontSize: 12,
-                    }}
+                  <TouchableOpacity
+                    onPress={() => deleteSubscription(item.name)}
                   >
-                    Delete
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+                    <Text
+                      style={{
+                        borderWidth: 1,
+                        borderColor: "#ef4444",
+                        borderRadius: 8,
+                        paddingHorizontal: 12,
+                        paddingVertical: 6,
+                        color: "#ef4444",
+                        fontSize: 12,
+                      }}
+                    >
+                      Delete
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </TouchableOpacity>
           ))}
         </ScrollView>
         <BottomSheet
